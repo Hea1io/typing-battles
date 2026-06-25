@@ -40,7 +40,7 @@ function loadText() {
     hint.textContent = 'Click the text above to start typing';
    
     renderText();
-    textDisplay.focus();
+    
 }
 
 function renderText() {
@@ -82,8 +82,8 @@ function finishRound() {
     if (isFinished) return;
     isFinished = true;
     clearInterval(timerInterval);
-    textDisplay.style.borderColor = "#4ecdc400";
-    hint.textContent = "Complete! Press 'New Text' to try aqain";
+    textDisplay.style.borderColor = "#4ecdc4";
+    hint.textContent = "Complete! Press 'New Text' to try again";
     hint.classList.remove('hidden');
 }
 
@@ -141,12 +141,11 @@ textDisplay.addEventListener('keydown', function(e) {
     updateStats();
 
     if (charIndex >= currentText.length) {
-        finishedRound();
+        finishRound();
     }
 });
 
 textDisplay.addEventListener('click', function() {
-    loadText();
     textDisplay.focus();
 });
 
@@ -154,7 +153,7 @@ textDisplay.addEventListener('click', function() {
     resetBtn.addEventListener('click', function() {
         loadText();
         textDisplay.style.borderColor = '#2a2a4a';
-        typingInput.focus();
+        typingDisplay.focus();
 
     });
 

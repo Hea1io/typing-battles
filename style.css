@@ -81,13 +81,14 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #444466;
+    color: #8888cc;
     font-size: 1.2rem;
     font-weight: 300;
     letter-spacing: 1px;
     pointer-events: none;
     opacity: 1;
     transition: opacity 0.3s ease;
+    text-shadow: 0 0 20px rgba(78, 205, 196, 0.1);
 }
 
 .text-display:focus::after {
