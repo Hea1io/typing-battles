@@ -1,7 +1,7 @@
 const texts = [
     "The quick brown fox jumps over the lazy dog",
     "Typing is a fundamental skill in the digital age",
-    "Practice makes perfect when learing to type",
+    "Practice makes perfect when learning to type",
     "Speed and accuracy are the keys to mastery",
     "The more you type the better you become"
 ];
@@ -13,13 +13,14 @@ let totalChars = 0;
 let startTime = null;
 let timerInterval = null;
 let isFinished = false;
+let isActive = false; 
 
 const textDisplay = document.getElementById('textDisplay');
-const typingInput = document.getElementById('typingInput');
 const wpmDisplay = document.getElementById('wpm');
 const accuracyDisplay = document.getElementById('accuracy');
 const timerDisplay = document.getElementById('timer');
 const resetBtn = document.getElementById('resetBtn');
+const hint = document.getElementById('hint');
 
 function loadText() {
     const randomIndex = Math.floor(Math.random() * texts.length);
@@ -28,15 +29,18 @@ function loadText() {
     mistakes = 0;
     totalChars = 0;
     isFinished = false;
+    isActive = false;
     startTime = null;
     clearInterval(timerInterval); 
     timerDisplay.textContent = '0';
     wpmDisplay.textContent = '0';
-    typingInput.value = '';
-    typingInput.disabled = false;
-    typingInput.focus();
-
+    accuracyDisplay.textContent = '100%';
+    textDisplay.style.borderColor = "#2a2a4a";
+    hint.classList.remove('hidden');
+    hint.textContent = 'Click the text above to start typing';
+   
     renderText();
+    textDisplay.focus();
 }
 
 function renderText() {
@@ -74,60 +78,78 @@ function startTimer() {
        }, 500);
     }
 
-    typingInput.addEventListener('input', function() {
-        if (isFinished) {
-            this.value = '';
-            return;
-        }
+function finishRound() {
+    if (isFinished) return;
+    isFinished = true;
+    clearInterval(timerInterval);
+    textDisplay.style.borderColor = "#4ecdc400";
+    hint.textContent = "Complete! Press 'New Text' to try aqain";
+    hint.classList.remove('hidden');
+}
 
-        if (charIndex >= currentText.length) {
-            finishRound();
-            return;
-        }
+textDisplay.addEventListener('keydown', function(e) {
 
-        const typed = this.value;
-        const lastChar = typed[typed.length - 1];
-        const expectedChar = currentText[charIndex];
-
-        const charSpans = textDisplay.querySelectorAll('.char');
-        const currentSpan = charSpans[charIndex];
-
-        charSpans.forEach(span => span.classList.remove('current'));
-
-        if (lastChar === expectedChar) {
-            currentSpan.classList.add('correct');
-            currentSpan.classList.remove('incorrect');
-            charIndex++;
-            totalChars++;
-        } else {
-            currentSpan.classList.add('incorrect');
-            mistakes++;
-            totalChars++;
-        }
-
-        if (charIndex < charSpans.length) {
-            charSpans[charIndex].classList.add('current');
-
-        }
-
-        this.value = '';
-
-        updateStats();
-
-        if (charIndex >= currentText.length) {
-            finishRound();
-        }
-    });
-
-    function finishRound() {
-        if (isFinished) return;
-        isFinished = true;
-        typingInput.disabled = true;
-        clearInterval(timerInterval);
-
-        textDisplay.style.borderColor = "#4ecdc4" ;
-
+    if (isFinished) {
+        return;
     }
+
+    if (e.key.length > 1 || e.ctrlKey || e.altKey || e.metaKey) {
+        return;
+    }
+
+    e.preventDefault();
+
+    if (!startTime && !isFinished) {
+        startTimer();
+        isActive = true;
+        hint.classList.add('hidden');
+    }
+
+    if (charIndex >= currentText.length) {
+        finishRound();
+        return;
+    }
+
+    const typedChar = e.key;
+    const expectedChar = currentText[charIndex];
+
+    const charSpans = textDisplay.querySelectorAll('.char');
+    const currentSpan = charSpans[charIndex];
+
+    charSpans.forEach(span => span.classList.remove('current'));
+
+    if (typedChar === expectedChar) {
+        currentSpan.classList.add('correct');
+        currentSpan.classList.remove('incorrect');
+        charIndex++;
+        totalChars++;
+    } else {
+        currentSpan.classList.add('incorrect');
+        mistakes++;
+        totalChars++;
+
+        textDisplay.style.borderColor = "#ff6b6b66";
+        setTimeout(() => {
+            if (!isFinished) textDisplay.style.borderColor = '#2a2a4a';
+        }, 150);
+    }
+
+    if (charIndex < charSpans.length) {
+        charSpans[charIndex].classList.add('current');
+    }
+
+    updateStats();
+
+    if (charIndex >= currentText.length) {
+        finishedRound();
+    }
+});
+
+textDisplay.addEventListener('click', function() {
+    loadText();
+    textDisplay.focus();
+});
+
 
     resetBtn.addEventListener('click', function() {
         loadText();
