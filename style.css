@@ -67,12 +67,15 @@ h1 {
 }
 
 .text-display:not(:focus) .char {
-    opacity: 0.4;
-    transition: opacity 0.3s ease;
+    opacity: 0.15;
+    filter: blur(4px);
+    transition: opacity 0.4s ease, filter 0.4s ease;
 }
 
 .text-display:focus .char{
     opacity: 1;
+    filter: blur(0px);
+    transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
 .text-display:not(:focus)::after {
@@ -89,6 +92,7 @@ h1 {
     opacity: 1;
     transition: opacity 0.3s ease;
     text-shadow: 0 0 20px rgba(78, 205, 196, 0.1);
+
 }
 
 .text-display:focus::after {
@@ -188,4 +192,188 @@ button:hover {
     background: #3a2a1a;
     color: #ffd93d;
     
+}
+
+.boss-section {
+    background: #0e0e22;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid #2a2a4a;
+    transition: border-color 0.3s ease;
+}
+
+.boss-section.boss-defeated {
+    border-color: #ffd93d;
+    box-shadow: 0 0 30px rgba(255, 217, 61, 0.1);
+}
+
+.boss-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    color: #ff6b6b;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+#bossName {
+    color: #ff6b6b;
+}
+
+#bossHpText {
+    color: #8888aa;
+    font-size: 0.9rem;
+}
+
+.boss-health-bar {
+    height: 16px;
+    background: #1a1a35;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.boss-health-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #ff3b3b, #ff6b6b);
+    transition: width 0.4s ease;
+    border-radius: 20px;
+}
+
+.boss-health-fill.low {
+    background: linear-gradient(90deg, #ff0000, #ff3b3b);
+    animation: pulse 0.8s infinite; 
+}
+
+@keyframes pulse {
+    0%, 100% { opacity : 1; }
+    50% { opacity :0.6; }
+}
+
+.damage-number {
+    position: fixed;
+    color: #ff6b6b;
+    font-size: 2.5rem;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 1000;
+    text-shadow: 0 0 20px rgba(255, 107, 107,0.3);
+    animation: floatUp 1s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(1.5);
+    }
+}
+
+.boss-attack-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0,0,0.15);
+    pointer-events: none;
+    z-index: 999;
+    animation: flashFade 0.6s forwards;
+}
+
+@keyframes flashFade {
+    0% { opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.boss-message {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 20, 40, 0.95);
+    color: #ff6b6b;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 2rem 3rem;
+    border-radius: 1rem;
+    border: 3px solid #ff6b6b;
+    z-index: 1000;
+    animation: bossMessageIn 0.5s forwards;
+    pointer-events: none;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 60px rgba(255,107,107,0.2);
+}
+
+@keyframes bossMessageIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.7);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.boss-message.fade-out {
+    animation: bossMessageOut 0.5s forwards;
+
+}
+
+@keyframes bossMessageOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.boss-message.fade-out {
+    animation: bossMessageOut 0.5s forwards;
+}
+
+@keyframes bossMessageOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.7);
+    }
+}
+
+#nextBossBtn {
+    background: #1a3a3a;
+    color: #4ecdc4;
+}
+
+#nextBossBtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform:none;
+}
+
+#nextBossBtn:hover:not(:disabled){
+    background: #1a4a4a;
+    transform: scale(1.05);
 }
