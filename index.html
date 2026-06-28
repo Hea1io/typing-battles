@@ -9,41 +9,62 @@
     </head>
     <body>
         <div class="container">
-            <header>
-                <h1>Typing Battles</h1>
-                <div class="stats">
-                    <span>WPM: <strong id="wpm">0</strong></span>
-                    <span>Accuracy: <strong id="accuracy">100%</strong></span>
-                    <span>Timer <strong id="timer">0</strong></span>
-                </div>
-            </header>
 
-            <div class="boss-section">
-                <div class="boss-header">
-                    <span id="bossName">William Shakespeare</span>
-                    <span id="bossHpText">HP: 100/100</span>
-                </div>
-                <div class="boss-health-bar">
-                    <div id="bossHealth" class="boss-health-fill"></div>
+            <div id="menuSection" class="menu-section">
+                <h1>Typing Battles</h1>
+                <p class="menu-subtitle">Choose your mode</p>
+                <div class="menu-buttons">
+                    <button id="bossModeBtn" class="menu-btn boss-btn">
+                        <span class="menu-icon">put smth here later</span>
+                        <span class="menu-label">Boss Batle</span>
+                        <span class="menu-desc">Defeat literary figures at their own game, by writing!</span>
+
+                    </button>
+                    <button id="practiceModeBtn" class="menu-btn practice-btn">
+                        <span class="menu-icon">put smth here</span>
+                        <span class="menu-label">WPM Practice</span>
+                        <span class="menu-desc">Test your typing speed & accuracy</span>
+                    </button>
                 </div>
             </div>
+            
+            <div id="gameSection" class="game-section hidden">
+                <header>
+                    <button id="backToMenuBtn" class="back-btn">Back to Menu</button>
+                    <h1 id="modeTitle">Typing Battles</h1>
+                    <div class="stats">
+                        <span>WPM: <strong id="wpm">0</strong></span>
+                        <span>Accuracy: <strong id="accuracy">100%</strong></span>
+                        <spam>Timer: <strong id="timer">0</strong>s</spam>
+                    </div>
+                </header>
 
-            <main>
-                <div id="textDisplay" class="text-display" tabindex="0">
-
-
+                <div id="bossSection" class="boss-section">
+                    <div class="boss-header">
+                        <span id="bossName">William Shakespeare</span>
+                        <span id="bossHpText">HP: 100/100</span>
+                    </div>
+                    <div class="boss-health-bar">
+                        <div id="bossHealth" class="boss-health-fill"></div>
+                    </div>
                 </div>
-               <div class="hint" id="hint">Click the text above to start typiing</div>
 
-            </main>
+                <main>
+                    <div id="textDisplay" class="text-display" tabindex="0">
 
-            <footer>
-                <button id="resetBtn">New Text</button>
-                <button id="nextBossBtn" disabled>Next Boss</button>
-            </footer>
+                    </div>
+                    <div class="hint" id="hint">Click above to start typing</div>
+                    </main>
+
+                    <footer>
+                        <button id="resetBtn">New Text</button>
+                        <button id="nextBossBtn" disabled>Next Boss</button>
+                    </footer>
+                </div>
             </div>
             <script src="script.js"></script>
-            
-
-    </body>
+        </body>
 </html>
+          
+
+               

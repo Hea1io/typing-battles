@@ -3,7 +3,9 @@ const texts = [
     "Typing is a fundamental skill in the digital age",
     "Practice makes perfect when learning to type",
     "Speed and accuracy are the keys to mastery",
-    "The more you type the better you become"
+    "The more you type the better you become",
+    "In the middle of difficulty lies opportunity",
+    "The only way to do great work is to love what you do"
 ];
 
 const bosses = [
@@ -34,11 +36,20 @@ let startTime = null;
 let timerInterval = null;
 let isFinished = false;
 let isActive = false; 
+let gameMode = 'boss';
 
 let currentBossIndex = 0;
 let bossHP = 100;
 let maxBossHP = 100;
 let bossDefeated = false;
+
+const menuSection = document.getElementById('menuSection');
+const gameSection = document.getElementById('gameSection');
+const modeTitle = document.getElementById('modeTitle');
+const bossSection = document.getElementById('bossSection');
+const backToMenuBtn = document.getElementById('backToMenuBtn');
+const bossModeBtn = document.getElementById('bossModeBtn')
+const practiceModeBtn = document.getElementById('practiceModeBtn');
 
 const textDisplay = document.getElementById('textDisplay');
 const wpmDisplay = document.getElementById('wpm');
@@ -51,6 +62,62 @@ const nextBossBtn = document.getElementById('nextBossBtn');
 const bossNameEl = document.getElementById('bossName');
 const bossHPText = document.getElementById('bossHpText');
 const bossHealthFill = document.getElementById('bossHealth');
+
+function showMenu() {
+    menuSection.classList.remove('hidden');
+    gameSection.classList.add('hidden');
+    document.querySelector('.container').style.minHeight = "500px";
+}
+
+function showGame(mode) {
+    gameMode = mode;
+    menuSection.classList.add('hidden');
+    gameSection.classList.remove('hidden');
+    document.querySelector('.container').style.minHeight = "auto";
+
+    if (mode === "boss") {
+        modeTitle.textContent = 'Boss Battle';
+        bossSection.classList.remove('hidden');
+        document.querySelector('.mode-badge')?.remove();
+        const badge = document.createElement('span');
+        badge.className = '.mode-badge boss-mode';
+        badge.textContent = 'Boss Mode';
+        modeTitle.parentNode.insertBefore(badge, modeTitle.nextSibling);
+        loadBoss(currentBossIndex);
+    } else {
+        modeTitle.textContent = 'WPM Practice';
+        bossSection.classList.add('hidden');
+        document.querySelector(".mode-badge")?.remove();
+        const badge = document.createElement('span');
+        badge.className = '.mode-badge';
+        badge.textContent = 'Practice';
+        modeTitle.parentNode.insertBefore(badge, modeTitle.nextSibling);
+        loadPracticeText();
+    }
+    textDisplay.focus();
+}
+
+function loadPracticeText() {
+    const randomIndex = Math.floor(Math.random() * texts.length);
+    currentText = texts[randomIndex];
+    charIndex = 0;
+    mistakes = 0;
+    totalChars = 0;
+    isFinished = false;
+    isActive = false;
+    startTime = null;
+    clearInterval(timerInterval);
+
+    timerDisplay.textContent = '0';
+    wpmDisplay.textContent ='0';
+    accuracyDisplay.textContent ='100%';
+    textDisplay.style.borderColor = "#2a2a4a";
+    hint.classList.remove('hidden');
+    hint.textContent = 'Click the text above to start typing';
+    nextBossBtn.disabled = true;
+
+    renderText(); 
+}
 
 function loadBoss(index) {
     const boss = bosses[index];
@@ -266,7 +333,7 @@ textDisplay.addEventListener('keydown', function(e) {
         currentSpan.classList.add('correct');
         currentSpan.classList.remove('incorrect');
         charIndex++;
-        totalChars++;
+        totalChars++; 
 
         const wpm = parseInt(wpmDisplay.textContent) || 0;
         let damage = 1;
@@ -303,18 +370,34 @@ textDisplay.addEventListener('keydown', function(e) {
 
 textDisplay.addEventListener('click', function() {
     textDisplay.focus();
+
 });
 
+bossModeBtn.addEventListener('click', function() {
+    showGame('boss');
+});
+
+practiceModeBtn.addEventListener('click', function() {
+    showGame('practice');
+});
+
+backToMenuBtn.addEventListener('click', function() {
+    clearInterval(timerInterval);
+    showMenu();
+});
 
 resetBtn.addEventListener('click', function() {
-        loadBoss(currentBossIndex);
+        if (gameMode === 'boss') {
+            loadBoss(currentBossIndex);
+
+        } else {
+            loadPracticeText();
+        }
         textDisplay.style.borderColor = '#2a2a4a';
         textDisplay.focus();
-
     });
 
-    loadText();
-
+    
 nextBossBtn.addEventListener('click', function() {
     if (currentBossIndex < bosses.length - 1) {
         currentBossIndex++;
@@ -329,7 +412,7 @@ nextBossBtn.addEventListener('click', function() {
         
     });
 
-    loadBoss(0);
+    showMenu();
   
     console.log('shakespeare is here')
     

@@ -23,6 +23,92 @@ body {
     width: 100%
 }
 
+.menu-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 450px;
+    padding: 1rem;
+}
+
+.menu-section h1 {
+    font-size: 3rem;
+    color: #4ecdc4;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 40px rgba(78,205,196,0.15);
+}
+
+.menu-subtitle {
+    color: #8888aa;
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    letter-spacing: 2px;
+}
+
+.menu-buttons {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.menu-btn {
+    flex: 1;
+    min-width: 250px;
+    padding: 2.5rem 2rem;
+    border: 2px solid #2a2a4a;
+    border-radius: 1.5rem;
+    background: #1a1a35;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: inherit;
+}
+
+.menu-btn:hover {
+    transform: translateY(-5px);
+    border-color: #4ecdc4;
+    box-shadow: 0 10px 40px rgba(78,205,196,0.1);
+}
+
+.menu-btn .menu-icon {
+    font-size: 3.5rem;
+}
+
+.menu-btn .menu-label {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.menu-btn .menu-desc {
+    font-size: 0.9rem;
+    color: #8888aa;
+}
+
+.menu-btn.boss-btn:hover {
+    border-color: #ff6b6b;
+    box-shadow: 0 10px 40px rgba(255, 107, 107, 0.1);
+}
+
+.menu-btn.practice-btn:hover {
+    border-color: #ffd93d;
+    box-shadow: 0 10px 40px rgba(255, 217, 61, 0.1);
+
+}
+
+.game-section {
+    display: block;
+}
+
+.game-section.hidden {
+    display: none;
+}
 header {
     display: flex;
     justify-content: space-between;
@@ -30,168 +116,48 @@ header {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 2px solid #2a2a4a;
+    position: relative;
 
 }
 
-h1 {
-    font-size: 1.8rem;
+header h1 {
+    font-size: 1.5rem;
+    color: #4ecdc4;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.back-btn {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid #2a2a4a;
+    border-radius: 2rem;
+    background: transparent;
+    color: #8888aa;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    font-family: inherit;
+    z-index: 1;
+}
+
+.back-btn:hover {
+    border-color: #4ecdc4;
     color: #4ecdc4;
 }
+
+
 
 .stats {
     display: flex;
     gap: 1.5rem;
     font-size: 0.9rem;
     color: #8888aa;
+    z-index: 1;
 }
 
 .stats strong {
     color: #e0e0e0;
-}
-
-.text-display {
-    background: #1a1a35;
-    padding: 1.8rem;
-    border-radius: 1rem;
-    font-size: 1.5rem;
-    line-height: 2.2rem;
-    min-height: 120px;
-    border: 2px solid #2a2a4a;
-    margin-bottom: 1.5rem;
-    color: #b0b0d0;
-    transition: border-color 0.3s ease, opacity 0.3s ease;
-    cursor: pointer;
-    outline: none;
-    user-select: none;
-
-}
-
-.text-display:not(:focus) .char {
-    opacity: 0.15;
-    filter: blur(4px);
-    transition: opacity 0.4s ease, filter 0.4s ease;
-}
-
-.text-display:focus .char{
-    opacity: 1;
-    filter: blur(0px);
-    transition: opacity 0.3s ease, filter 0.3s ease;
-}
-
-.text-display:not(:focus)::after {
-    content: "Click to start typing...";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #8888cc;
-    font-size: 1.2rem;
-    font-weight: 300;
-    letter-spacing: 1px;
-    pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-    text-shadow: 0 0 20px rgba(78, 205, 196, 0.1);
-
-}
-
-.text-display:focus::after {
-    opacity: 0;
-}
-
-.text-display {
-    position: relative;
-}
-
-.text-display .char {
-    transition: color 0.1s, opacity 0.3s ease;
-}
-
-.text-display .char.correct {
-    color: #4ecdc4
-}
-
-.text-display .char.incorrect {
-    color: #ff6b6b;
-    background: #ff6b6b33;
-    border-radius: 4px;
-}
-
-.text-display .char.current {
-    color: #e0e0e0;
-    border-bottom: 3px solid #ffd93d;
-    animation: blink 0.8s infinite;
-}
-
-.text-display .char.waiting {
-    opacity: 0.3;
-}
-
-@keyframes blink {
-    0%, 100% { border-color: #ffd93d; }
-    50% { border-color: transparent; }
-}
-
-.hint {
-    text-align:center;
-    color: #444466;
-    font-size: 0.85rem;
-    margin: 0.5rem 0 1.5rem 0;
-    min-height: 1.5rem;
-    transition: opacity 0.3s ease;
-}
-
-.hint.hidden {
-    opacity: 0;
-}
-
-
-
-footer {
-    margin-top: 1.5rem;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-}
-
-button {
-    padding: 0.8rem 2rem;
-    border: none;
-    border-radius: 3rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    background: #2a2a4a;
-    color: #b0b0d0;
-    transition: all 0.2s;
-}
-
-button:hover {
-    transform: scale(1.05);
-    background: #3a3a5a;
-    
-}
-
-.status {
-    display: inline-block;
-    padding: 0.2rem 0.8rem;
-    border-radius: 1rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    background: #2a2a4a;
-    color: #8888aa;
-    transition: all 0.3s ease;
-}
-
-.status.typing {
-    background: #1a3a3a;
-    color: #4ecdc4;
-}
-
-.status.done {
-    background: #3a2a1a;
-    color: #ffd93d;
-    
 }
 
 .boss-section {
@@ -201,6 +167,10 @@ button:hover {
     margin-bottom: 1.5rem;
     border: 2px solid #2a2a4a;
     transition: border-color 0.3s ease;
+}
+
+.boss-section.hidden {
+    display: none;
 }
 
 .boss-section.boss-defeated {
@@ -251,6 +221,150 @@ button:hover {
 @keyframes pulse {
     0%, 100% { opacity : 1; }
     50% { opacity :0.6; }
+}
+
+
+.text-display {
+    background: #1a1a35;
+    padding: 1.8rem;
+    border-radius: 1rem;
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+    min-height: 120px;
+    border: 2px solid #2a2a4a;
+    margin-bottom: 1.5rem;
+    color: #b0b0d0;
+    transition: border-color 0.3s ease, opacity 0.3s ease;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    position: relative;
+
+}
+
+.text-display:not(:focus) .char {
+    opacity: 0.15;
+    filter: blur(4px);
+    transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+.text-display:focus .char{
+    opacity: 1;
+    filter: blur(0px);
+    transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.text-display:not(:focus)::after {
+    content: "Click to start typing...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #8888cc;
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    text-shadow: 0 0 20px rgba(78, 205, 196, 0.1);
+    background: rgba(20,20, 40, 0.7);
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    backdrop-filter: blur(2px);
+
+}
+
+.text-display:focus::after {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+.text-display .char {
+    transition: color 0.1s, opacity 0.3s ease, filter 0.3s ease;
+}
+
+.text-display .char.correct {
+    color: #4ecdc4
+}
+
+.text-display .char.incorrect {
+    color: #ff6b6b;
+    background: #ff6b6b33;
+    border-radius: 4px;
+}
+
+.text-display .char.current {
+    color: #e0e0e0;
+    border-bottom: 3px solid #ffd93d;
+    animation: blink 0.8s infinite;
+}
+
+.text-display .char.waiting {
+    opacity: 0.3;
+}
+
+@keyframes blink {
+    0%, 100% { border-color: #ffd93d; }
+    50% { border-color: transparent; }
+}
+
+.hint {
+    text-align:center;
+    color: #444466;
+    font-size: 0.85rem;
+    margin: 0.5rem 0 1.5rem 0;
+    min-height: 1.5rem;
+    transition: opacity 0.3s ease;
+}
+
+.hint.hidden {
+    opacity: 0;
+}
+
+
+
+footer {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+footer button {
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 3rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: #2a2a4a;
+    color: #b0b0d0;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+footer button:hover:not(:disabled) {
+    transform: scale(1.05);
+    background: #3a3a5a;
+    
+}
+
+footer button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#nextBossBtn {
+    background: #1a3a3a;
+    color: #4ecdc4;
+}
+
+
+#nextBossBtn:hover:not(:disabled){
+    background: #1a4a4a;
 }
 
 .damage-number {
@@ -345,35 +459,88 @@ button:hover {
     }
 }
 
-.boss-message.fade-out {
-    animation: bossMessageOut 0.5s forwards;
-}
 
-@keyframes bossMessageOut {
-    0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-
-    }
-
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.7);
-    }
-}
-
-#nextBossBtn {
+.mode-badge {
+    display: inline-block;
+    padding: 0.2rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     background: #1a3a3a;
     color: #4ecdc4;
 }
 
-#nextBossBtn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-    transform:none;
+.mode-badge.boss-mode {
+    background: #3a1a1a;
+    color: #ff6b6b;
 }
 
-#nextBossBtn:hover:not(:disabled){
-    background: #1a4a4a;
-    transform: scale(1.05);
+@media (max-width: 600px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .menu-section h1 {
+        font-size: 2rem;
+    }
+
+    .menu-btn {
+        min-width: 100%;
+        padding: 1.5rem;
+    }
+
+    .menu-btn .menu-icon {
+        font-size: 2.5rem;
+    }
+
+    header h1 {
+        font-size: 1rem;
+        position: static;
+        transform: none;
+    }
+
+    header {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .stats {
+        gap: 1rem;
+        font-size: 0.75rem;
+    }
+
+    .text-display {
+        font-size: 1.2rem;
+        line-height: 1.8rem;
+        padding: 1rem;
+    }
 }
+
+.status {
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: #2a2a4a;
+    color: #8888aa;
+    transition: all 0.3s ease;
+}
+
+.status.typing {
+    background: #1a3a3a;
+    color: #4ecdc4;
+}
+
+.status.done {
+    background: #3a2a1a;
+    color: #ffd93d;
+    
+}
+
+
+
+
