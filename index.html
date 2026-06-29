@@ -20,10 +20,17 @@
                         <span class="menu-desc">Defeat literary figures at their own game, by writing!</span>
 
                     </button>
+
                     <button id="practiceModeBtn" class="menu-btn practice-btn">
                         <span class="menu-icon">put smth here</span>
                         <span class="menu-label">WPM Practice</span>
                         <span class="menu-desc">Test your typing speed & accuracy</span>
+                    </button>
+
+                    <button id="guideModeBtn" class="menu-btn guide-btn">
+                        <span class="menu-icon">put smth here later</span>
+                        <span class="menu-label">Guide</span>
+                        <span class="menu-desc">Learn how to play Typing Battles </span>
                     </button>
                 </div>
             </div>
@@ -35,7 +42,7 @@
                     <div class="stats">
                         <span>WPM: <strong id="wpm">0</strong></span>
                         <span>Accuracy: <strong id="accuracy">100%</strong></span>
-                        <spam>Timer: <strong id="timer">0</strong>s</spam>
+                        <span>Timer: <strong id="timer">0</strong>s</span>
                     </div>
                 </header>
 
@@ -61,10 +68,73 @@
                         <button id="nextBossBtn" disabled>Next Boss</button>
                     </footer>
                 </div>
+
+                <div id="guideSection" class="guide-section-page hidden">
+                    <header>
+                        <button id="backToMenuFromGuideBtn" class="back-btn">Back to Menu</button>
+                        <h1 id="guideTitle">How To Play</h1>
+                        <div style="width: 100px;"></div>
+
+                    </header>
+                    <div class="guide-content-page">
+                        <div class="guide-text">
+                            <h2>Welcome to Typing Battles!</h2>
+
+                            <div class="guide-section-block">
+                                <h3>The Goal</h3>
+                                <p>Type accurately and quickly to defeat literacy bosses or improve your WPM!</p>
+                            </div>
+                            <div class="guide-section-block">
+                                <h3>How to Start</h3>
+                                <p>Click on the blurred text to focus it, then start typing. The text will become clear when you click it.</p>        
+                            </div>
+                            <div class="guide-section-block">
+                                <h3>Correct Letters</h3>
+                                <p>When you type a letter correctly it turns <span class="text-green">green</span>. This damages the boss!</p>
+                            </div>
+                            <div class="guide-section-block">
+                                <h3>Speed = Damage</h3>
+                                <p>The faster you type, the more damage you deal to the boss!</p>
+                                <ul>
+                                    <li>20+ WPM: 1.5x damage</li>
+                                    <li>40+ WPM: 2x damage</li>
+                                    <li>60+ WPM: 3x damage</li>
+                                </ul>
+                            </div>
+                            <div class="guide-section-block">
+                                <h3>Boss Special Attack</h3>
+                                <p>When a boss drops below 50% HP, they unleash a special attack!</p>
+                                
+                                <ul>
+                                    <li>Shakespeare: Scrambled the remaining text, meaning you have to remeber what it was before to type it correctly.</li>
+                                    <li>Robert Frost: Not even in the game yet</li>
+                                    <li>Edgar Allan Poe: Not even in the game yet</li>
+                                </ul>
+                            </div>
+                            <div class="guide-section-block">
+                                <h3>Winning</h3>
+                                <p>Defeat all bosses to become the Typing Master!</p>
+                            </div>
+
+                            <div class="guide-section-block highlight">
+                                <h3>Pro Tips </h3>
+                                <ul>
+                                    <li>Focus on accuracy first, speed will come naturally</li>
+                                    <li>Stay calm during boss special attacks</li>
+                                    <li>Use Practice Mode to warm up before boss battles</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="guide-footer">
+                        <button id="backToMenuFromGuideBtn2" class="back-btn">Back To Menu</button>
+
+                    </footer>
+                </div>
             </div>
             <script src="script.js"></script>
         </body>
 </html>
-          
+    
 
                

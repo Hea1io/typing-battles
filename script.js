@@ -48,7 +48,7 @@ const gameSection = document.getElementById('gameSection');
 const modeTitle = document.getElementById('modeTitle');
 const bossSection = document.getElementById('bossSection');
 const backToMenuBtn = document.getElementById('backToMenuBtn');
-const bossModeBtn = document.getElementById('bossModeBtn')
+const bossModeBtn = document.getElementById('bossModeBtn');
 const practiceModeBtn = document.getElementById('practiceModeBtn');
 
 const textDisplay = document.getElementById('textDisplay');
@@ -60,7 +60,7 @@ const hint = document.getElementById('hint');
 const nextBossBtn = document.getElementById('nextBossBtn');
 
 const bossNameEl = document.getElementById('bossName');
-const bossHPText = document.getElementById('bossHpText');
+const bossHpText = document.getElementById('bossHpText');
 const bossHealthFill = document.getElementById('bossHealth');
 
 function showMenu() {
@@ -80,7 +80,7 @@ function showGame(mode) {
         bossSection.classList.remove('hidden');
         document.querySelector('.mode-badge')?.remove();
         const badge = document.createElement('span');
-        badge.className = '.mode-badge boss-mode';
+        badge.className = 'mode-badge boss-mode';
         badge.textContent = 'Boss Mode';
         modeTitle.parentNode.insertBefore(badge, modeTitle.nextSibling);
         loadBoss(currentBossIndex);
@@ -89,7 +89,7 @@ function showGame(mode) {
         bossSection.classList.add('hidden');
         document.querySelector(".mode-badge")?.remove();
         const badge = document.createElement('span');
-        badge.className = '.mode-badge';
+        badge.className = 'mode-badge';
         badge.textContent = 'Practice';
         modeTitle.parentNode.insertBefore(badge, modeTitle.nextSibling);
         loadPracticeText();
@@ -174,7 +174,7 @@ function damageBoss(damage) {
     if (bossHP <= 0) {
         bossDefeated = true;
         document.querySelector('.boss-section').classList.add('boss-defeated');
-        bossNameEl.textContent = 'WIN' + bosses[currentBossIndex].name + 'DEFEATED!';
+        bossNameEl.textContent = 'WIN ' + bosses[currentBossIndex].name + ' DEFEATED!';
         nextBossBtn.disabled = false;
         finishRound();
     }

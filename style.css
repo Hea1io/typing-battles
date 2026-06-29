@@ -32,6 +32,9 @@ body {
     padding: 1rem;
 }
 
+.menu-section.hidden {
+    display: none !important;
+}
 .menu-section h1 {
     font-size: 3rem;
     color: #4ecdc4;
@@ -102,12 +105,13 @@ body {
 
 }
 
+
 .game-section {
-    display: block;
+    display: none !important;
 }
 
-.game-section.hidden {
-    display: none;
+.game-section:not(.hidden) {
+    display: block !important;
 }
 header {
     display: flex;
@@ -541,6 +545,8 @@ footer button:disabled {
     
 }
 
-
-
+.menu-btn.guide-btn:hover {
+    border-color: #ff9d3d;
+    box-shadow: 0 10px 40px rgba(255,217,61,0.1);
+}
 
