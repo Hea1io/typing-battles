@@ -2,6 +2,7 @@
 const bosses = [
     {
         name: 'William Shakespeare',
+        icon: '📜',
         hp: 300,
         maxHp: 300,
         quotes: [
@@ -19,6 +20,7 @@ const bosses = [
     },
     {
         name: 'Robert Frost',
+        icon: '❄️',
         hp: 350,
         maxHp: 350,
         quotes: [
@@ -37,6 +39,7 @@ const bosses = [
     },
     {
         name: 'Edgar Allan Poe',
+        icon: '🥀',
         hp: 600,
         maxHp: 600,
         quotes: [
@@ -95,6 +98,8 @@ const modalShareBtn = document.getElementById('modalShareBtn');
 const modalNextBtn = document.getElementById('modalNextBtn');
 const modalRedoBtn = document.getElementById('modalRedoBtn');
 
+const bossPortrait = document.getElementById('bossPortrait');
+
 
 function loadBoss(index) {
 
@@ -117,6 +122,7 @@ function loadBoss(index) {
     }
     const boss = bosses[index];
     bossNameEl.textContent = boss.name;
+    updateBossPortrait(boss.icon);
     bossHP = boss.hp;
     maxBossHP = boss.maxHp;
     bossDefeated = false;
@@ -154,17 +160,22 @@ function loadQuote() {
     }
     const boss = bosses[currentBossIndex];
     if (currentQuoteIndex >= boss.quotes.length) {
+     if (!bossDefeated) {
         bossDefeated = true;
         gameWon = true;
+        animateBossDefeated();
+
         document.querySelector('.boss-section').classList.add('boss-defeated');
         bossNameEl.textContent = 'WIN ' + boss.name + ' DEFEATED!';
         hint.textContent = 'You win! Click "New Fight" to continue';
         hint.classList.remove('hidden');
         isFinished = true;
-
+     
         setTimeout(() => {
             showBossDefeatedModal();
         }, 800);
+     }
+
         return;
     }
 
@@ -237,9 +248,12 @@ function damageBoss(damage) {
     bossHP = Math.max(0, bossHP - damage);
     updateBossHealth();
     showDamageNumber(damage);
+    animateBossDamage();
 
     if (bossHP <= 0 && !bossDefeated) {
         bossDefeated = true;
+        gameWon = true;
+        animateBossDefeated();
         document.querySelector('.boss-section').classList.add('boss-defeated');
         bossNameEl.textContent = 'WIN ' + bosses[currentBossIndex].name + ' DEFEATED!';
         hint.textContent = 'Boss down! Moving to next quote...';
@@ -284,6 +298,8 @@ function triggerSpecialAttack() {
     const hpPercent = bossHP / maxBossHP;
     if (hpPercent <= boss.specialAttack.threshold) {
         boss.specialAttack.triggered = true;
+
+        animateBossSpecialAttack();
 
         showBossMessage(boss.specialAttack.message + ' 3 seconds!');
 
@@ -416,6 +432,35 @@ function hideBossDefeatedModal() {
 modalShareBtn.addEventListener('click', function() {
     shareScore();
 });
+
+function animateBossDamage() {
+    bossPortrait.classList.remove('damaged');
+    void bossPortrait.offsetWidth;
+    bossPortrait.classList.add('damaged');
+    setTimeout(() => {
+        bossPortrait.classList.remove('damaged');
+    }, 400);
+    
+}
+
+function animateBossSpecialAttack() {
+    bossPortrait.classList.remove('special-attack');
+    void bossPortrait.offsetWidth;
+    bossPortrait.classList.add('special-attack');
+    setTimeout(() => {
+        bossPortrait.classList.remove('special-attack');
+    }, 800);
+}
+
+function animateBossDefeated() {
+    bossPortrait.classList.remove('defeated');
+    void bossPortrait.offsetWidth;
+    bossPortrait.classList.add('defeated');
+}
+
+function updateBossPortrait(icon) {
+    bossPortrait.textContent = icon;
+}
 
 modalNextBtn.addEventListener('click', function() {
     hideBossDefeatedModal();
