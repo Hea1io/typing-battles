@@ -2,8 +2,8 @@
 const bosses = [
     {
         name: 'William Shakespeare',
-        hp: 100,
-        maxHp: 100,
+        hp: 300,
+        maxHp: 300,
         quotes: [
             "To be or not to be that is the question",
             "All the world's a stage and all the men and women merely players",
@@ -19,8 +19,8 @@ const bosses = [
     },
     {
         name: 'Robert Frost',
-        hp: 120,
-        maxHp: 120,
+        hp: 350,
+        maxHp: 350,
         quotes: [
             'Two roads diverged in a yellow wood',
             'The woods are lovely dark and deep',
@@ -37,8 +37,8 @@ const bosses = [
     },
     {
         name: 'Edgar Allan Poe',
-        hp: 150,
-        maxHp: 150,
+        hp: 600,
+        maxHp: 600,
         quotes: [
             "Quoth the raven nevermore",
             "All that we see or seem is but a dream within a dream",
@@ -60,29 +60,61 @@ let totalChars = 0;
 let startTime = null;
 let timerInterval = null;
 let isFinished = false;
-
+let scrambledTimeout = null;
+let originalTextBackup = '';
 
 
 let currentBossIndex = 0;
 let currentQuoteIndex = 0;
-let bossHP = 100;
-let maxBossHP = 100;
+let bossHP = bosses[0].hp;
+let maxBossHP = bosses[0].maxHp;
 let bossDefeated = false;
 let gameWon = false;
+let allBossesDefeated = false;
 
 
 const textDisplay = document.getElementById('textDisplay');
 const wpmDisplay = document.getElementById('wpm');
 const accuracyDisplay = document.getElementById('accuracy');
 const timerDisplay = document.getElementById('timer');
+
 const resetBtn = document.getElementById('resetBtn');
 const hint = document.getElementById('hint');
+
 const bossNameEl = document.getElementById('bossName');
 const bossHpText = document.getElementById('bossHpText');
 const bossHealthFill = document.getElementById('bossHealth');
+const bossDefeatedModal = document.getElementById('bossDefeatedModal');
+
+const modalBossName = document.getElementById('modalBossName');
+const modalWpm = document.getElementById('modalWpm');
+const modalAccuracy = document.getElementById('modalAccuracy');
+const modalTime = document.getElementById('modalTime');
+const modalQuotes = document.getElementById('modalQuotes');
+const modalShareBtn = document.getElementById('modalShareBtn');
+const modalNextBtn = document.getElementById('modalNextBtn');
+const modalRedoBtn = document.getElementById('modalRedoBtn');
 
 
 function loadBoss(index) {
+
+    if (index >= bosses.length) {
+        allBossesDefeated = true ;
+        bossNameEl.textContent = 'ALL BOSSES DEFEATED!',
+        bossHpText.textContent = 'You are the Typing Master!';
+        bossHealthFill.style.width = '0%';
+        hint.textContent = 'You beat every boss! Click "New Fight" to start over';
+
+        hint.classList.remove('hidden');
+        isFinished = true;
+        return;
+    }
+
+    if (scrambledTimeout) {
+        clearTimeout(scrambledTimeout);
+        scrambledTimeout = null;
+        originalTextBackup = '';
+    }
     const boss = bosses[index];
     bossNameEl.textContent = boss.name;
     bossHP = boss.hp;
@@ -114,6 +146,12 @@ function loadBoss(index) {
 }
 
 function loadQuote() {
+
+    if (scrambledTimeout) {
+        clearTimeout(scrambledTimeout);
+        scrambledTimeout = null;
+        originalTextBackup = '';
+    }
     const boss = bosses[currentBossIndex];
     if (currentQuoteIndex >= boss.quotes.length) {
         bossDefeated = true;
@@ -123,6 +161,10 @@ function loadQuote() {
         hint.textContent = 'You win! Click "New Fight" to continue';
         hint.classList.remove('hidden');
         isFinished = true;
+
+        setTimeout(() => {
+            showBossDefeatedModal();
+        }, 800);
         return;
     }
 
@@ -196,20 +238,21 @@ function damageBoss(damage) {
     updateBossHealth();
     showDamageNumber(damage);
 
-    if (bossHP <= 0) {
+    if (bossHP <= 0 && !bossDefeated) {
         bossDefeated = true;
         document.querySelector('.boss-section').classList.add('boss-defeated');
         bossNameEl.textContent = 'WIN ' + bosses[currentBossIndex].name + ' DEFEATED!';
         hint.textContent = 'Boss down! Moving to next quote...';
         hint.classList.remove('hidden');
         isFinished = true;
-        setTimeout(() => {
-            currentQuoteIndex++;
-            loadQuote();
-        }, 1500);
-    }
 
+        setTimeout(() => {
+            showBossDefeatedModal();
+        }, 800);
+        return;
+    }
 }
+
 
 function showDamageNumber(damage) {
     const el = document.createElement('div');
@@ -242,7 +285,7 @@ function triggerSpecialAttack() {
     if (hpPercent <= boss.specialAttack.threshold) {
         boss.specialAttack.triggered = true;
 
-        showBossMessage(boss.specialAttack.message);
+        showBossMessage(boss.specialAttack.message + ' 3 seconds!');
 
         const flash = document.createElement('div');
         flash.className = 'boss-attack-flash';
@@ -254,10 +297,20 @@ function triggerSpecialAttack() {
 }
 
 function scrambleRemainingText() {
-    const charSpans = textDisplay.querySelectorAll('.char');
-    const remainingChars = [];
+    if (scrambledTimeout) {
+        clearTimeout(scrambledTimeout);
+        scrambledTimeout = null;
+        restoreScrambledText();
+    }
 
-    charSpans.forEach((span,i) => {
+    const charSpans = textDisplay.querySelectorAll('.char');
+    originalTextBackup = '';
+    charSpans.forEach(span => {
+        originalTextBackup += span.textContent;
+    });
+
+    const remainingChars = [];
+    charSpans.forEach((span, i) => {
         if (i >= charIndex && !span.classList.contains('correct')) {
             remainingChars.push(span.textContent);
         }
@@ -266,6 +319,7 @@ function scrambleRemainingText() {
     for (let i = remainingChars.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [remainingChars[i], remainingChars[j]] = [remainingChars[j], remainingChars[i]];
+
     }
 
     let idx = 0;
@@ -274,7 +328,41 @@ function scrambleRemainingText() {
             span.textContent = remainingChars[idx++];
         }
     });
-}
+
+    hint.textContent = 'Text Scrambled! It will restore in 3 seconds...';
+    hint.className = 'hint warning';
+    hint.classList.remove('hidden');
+
+    scrambledTimeout = setTimeout(() => {
+        restoreScrambledText();
+    }, 3000);
+ }
+
+ function restoreScrambledText() {
+    if (!originalTextBackup) return;
+
+    const charSpans = textDisplay.querySelectorAll('.char');
+    charSpans.forEach((span, i) => {
+        if (i >= charIndex && !span.classList.contains('correct')) {
+            span.textContent = originalTextBackup[i] || span.textContent;
+        }
+    });
+
+    scrambledTimeout = null;
+    originalTextBackup = '';
+
+    if (!isFinished && !bossDefeated) {
+        hint.textContent = 'Text Restored, keep typing!';
+        hint.className = 'hint restored';
+        hint.classList.remove('hidden');
+        setTimeout(() => {
+            if (!isFinished && !bossDefeated) {
+                hint.classList.add('hidden');
+            }
+        }, 1500);
+    }
+ }
+
 
 function shareScore() {
     const wpm = wpmDisplay.textContent;
@@ -295,6 +383,55 @@ function shareScore() {
     }
 }
 
+function showBossDefeatedModal() {
+    
+    const wpm = wpmDisplay.textContent; 
+    const accuracy = accuracyDisplay.textContent;
+    const time = timerDisplay.textContent;
+
+    const boss = bosses[currentBossIndex];
+    modalBossName.textContent = boss.name;
+    modalWpm.textContent = wpm;
+    modalAccuracy.textContent = accuracy + '%'
+    modalTime.textContent = time + 's';
+    modalQuotes.textContent = `${currentQuoteIndex}/${boss.quotes.length}`;
+
+    bossDefeatedModal.classList.remove('hidden');
+
+    if (currentBossIndex >= bosses.length - 1) {
+        modalNextBtn.textContent = 'All Bosses Defeated!';
+        modalNextBtn.disabled = true;
+        modalNextBtn.style.opacity = '0.5';
+    } else {
+        modalNextBtn.textContent = `Next: ${bosses[currentBossIndex + 1].name}`;
+        modalNextBtn.disabled = false;
+        modalNextBtn.style.opacity = '1';
+    }
+}
+
+function hideBossDefeatedModal() {
+    bossDefeatedModal.classList.add('hidden');
+}
+
+modalShareBtn.addEventListener('click', function() {
+    shareScore();
+});
+
+modalNextBtn.addEventListener('click', function() {
+    hideBossDefeatedModal();
+    if (currentBossIndex < bosses.length - 1) {
+        currentBossIndex++;
+        currentQuoteIndex = 0;
+        loadBoss(currentBossIndex);
+    }
+});
+
+modalRedoBtn.addEventListener('click', function() {
+    hideBossDefeatedModal();
+    bosses[currentBossIndex].specialAttack.triggered = false;
+    currentQuoteIndex = 0;
+    loadBoss(currentBossIndex);
+});
 
 textDisplay.addEventListener('keydown', function(e) {
 
@@ -304,7 +441,7 @@ textDisplay.addEventListener('keydown', function(e) {
     e.preventDefault();
 
     if (!startTime) {
-        isActive = true;
+        startTimer();
         hint.classList.add('hidden');
     }
 
@@ -369,6 +506,7 @@ textDisplay.addEventListener('click', function() {
 });
 
 resetBtn.addEventListener('click', function() {
+       hideBossDefeatedModal();
        currentQuoteIndex = 0;
        currentBossIndex = 0;
        bosses.forEach(b => b.specialAttack.triggered = false);
