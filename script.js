@@ -3,6 +3,7 @@ const bosses = [
     {
         name: 'William Shakespeare',
         icon: '📜',
+        image: '',
         hp: 300,
         maxHp: 300,
         quotes: [
@@ -21,6 +22,7 @@ const bosses = [
     {
         name: 'Robert Frost',
         icon: '❄️',
+        image: '',
         hp: 350,
         maxHp: 350,
         quotes: [
@@ -40,6 +42,7 @@ const bosses = [
     {
         name: 'Edgar Allan Poe',
         icon: '🥀',
+        image: '',
         hp: 600,
         maxHp: 600,
         quotes: [
@@ -458,8 +461,21 @@ function animateBossDefeated() {
     bossPortrait.classList.add('defeated');
 }
 
-function updateBossPortrait(icon) {
-    bossPortrait.textContent = icon;
+function updateBossPortrait(imagePath, icon) {
+    bossImage.classList.remove('hidden');
+    bossImage.src = imagePath;
+    bossImage.alt = `Portrait of ${bosses[currentBossIndex].name}`;
+    bossFallback.textContent = icon;
+
+    bossImage.onerror = function() {
+        console.warm(`Failed to load image: ${imagePath}`);
+        bossImage.classList.add('hidden');
+    };
+
+    bossImage.onload = function() {
+        bossImage.classList.remove('hidden');
+    };
+  
 }
 
 modalNextBtn.addEventListener('click', function() {

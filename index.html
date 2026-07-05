@@ -12,6 +12,10 @@
 
         <header>
                 <h1>Typing Battles</h1>
+        </div>
+        <div class="header-right">
+            <button id="themeToggle" class="theme-btn">MOON</button>
+       
                 <div class="stats">
                     <span><strong id='wpm'>0</strong> WPM</span>
                     <span><strong id='accuracy'>100</strong>%</span>
@@ -21,7 +25,10 @@
 
                 <div class="boss-section">
                     <div class="boss-portrait-container">
-                        <div id="bossPortrait" class="boss-portrait">YUR</div>
+                        <div id="bossPortrait" class="boss-portrait">
+                            <img id="bossImage" src="" alt="Boss Portrait">
+                            <span id="bossFallback" class="fallback-text">YUR</span>
+                        </div>
                         <div class="boss-info">
                             <div class="boss-header">
                             <span id="bossName">William Shakespeare</span>
