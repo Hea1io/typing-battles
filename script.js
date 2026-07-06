@@ -3,7 +3,7 @@ const bosses = [
     {
         name: 'William Shakespeare',
         icon: '📜',
-        image: '',
+        image: 'images/shakey.jpeg',
         hp: 300,
         maxHp: 300,
         quotes: [
@@ -22,7 +22,7 @@ const bosses = [
     {
         name: 'Robert Frost',
         icon: '❄️',
-        image: '',
+        image: 'images/bert.jpeg',
         hp: 350,
         maxHp: 350,
         quotes: [
@@ -42,7 +42,7 @@ const bosses = [
     {
         name: 'Edgar Allan Poe',
         icon: '🥀',
-        image: '',
+        image: 'images/Poe.jpeg',
         hp: 600,
         maxHp: 600,
         quotes: [
@@ -78,6 +78,9 @@ let bossDefeated = false;
 let gameWon = false;
 let allBossesDefeated = false;
 
+let totalWPM = 0;
+let totalAccuracy = 100;
+let totalTime = 0;
 
 const textDisplay = document.getElementById('textDisplay');
 const wpmDisplay = document.getElementById('wpm');
@@ -175,10 +178,14 @@ function loadQuote() {
         hint.textContent = 'You win! Click "New Fight" to continue';
         hint.classList.remove('hidden');
         isFinished = true;
+
+        totalWPM = parseInt(wpmDisplay.textContent) || 0;
+        totalAccuracy = parseInt(accuracyDisplay.textContent) || 100;
+        totalTime = parseInt(timerDisplay.text.content) || 0;
      
-        setTimeout(() => {
+        setTimeout(function()  {
             showBossDefeatedModal();
-        }, 800);
+        }, 500);
      }
 
         return;
@@ -191,14 +198,26 @@ function loadQuote() {
     isFinished = false;
     startTime = null;
     clearInterval(timerInterval);
-    timerDisplay.textContent = '0';
-    wpmDisplay.textContent = '0';
-    accuracyDisplay.textContent = '100';
+  
     textDisplay.style.borderColor = '#2a2a4a';
     hint.classList.remove('hidden');
-    hint.textContent = 'Click to start typing';
+    hint.textContent = `QUOTE ${currentQuoteIndex + 1}/${boss.quotes.length}`;
     renderText(); 
-}
+
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerIInterval = null;
+    }
+    startTime = Date.now();
+    timerInterval = setInterval(() => {
+        if (starTime) {
+            const seconds = Math.floor((Date.now() - startTime) / 1000);
+            timerDisplay.textContent = seconds;
+            updateStats();
+        }
+    },500);
+    }
+
 
  function updateBossHealth(){
     const percent = Math.max(0, (bossHP / maxBossHP) * 100);
@@ -264,6 +283,10 @@ function damageBoss(damage) {
         hint.textContent = 'Boss down! Moving to next quote...';
         hint.classList.remove('hidden');
         isFinished = true;
+
+        totalWPM = parseInt(wpmDisplay.textContent) || 0;
+        totalAccuracy = parseInt(accuracyDisplay.textContent) || 100;
+        totalTime = parseInt(timerDisplay.textContent) || 0;
 
         setTimeout(function()  {
             updateStats();
@@ -409,9 +432,9 @@ function showBossDefeatedModal() {
 
     updateStats();
     
-    const wpm = wpmDisplay.textContent || '0'; 
-    const accuracy = accuracyDisplay.textContent || '100';
-    const time = timerDisplay.textContent || '0';
+    const wpm = totalWPM || wpmDisplay.textContent || '0'; 
+    const accuracy = totalAccuracy || accuracyDisplay.textContent || '100';
+    const time = totalTime || timerDisplay.textContent || '0';
 
     const boss = bosses[currentBossIndex];
     modalBossName.textContent = boss.name;
@@ -467,11 +490,12 @@ function animateBossDefeated() {
 }
 
 function updateBossPortrait(imagePath, icon) {
+    if (imagePath && imagePath !== '') {
     bossImage.classList.remove('hidden');
     bossImage.src = imagePath;
     bossImage.alt = `Portrait of ${bosses[currentBossIndex].name}`;
     bossFallback.textContent = icon;
-
+    
     bossImage.onerror = function() {
         console.warn(`Failed to load image: ${imagePath}`);
         bossImage.classList.add('hidden');
@@ -480,6 +504,10 @@ function updateBossPortrait(imagePath, icon) {
     bossImage.onload = function() {
         bossImage.classList.remove('hidden');
     };
+} else {
+   bossImage.classList.add('hidden');
+   bossFallback.textContent = icon;
+    }
   
 }
 
