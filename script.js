@@ -4,8 +4,8 @@ const bosses = [
         name: 'William Shakespeare',
         icon: '📜',
         image: 'images/shakey.jpeg',
-        hp: 300,
-        maxHp: 300,
+        hp: 800,
+        maxHp: 800,
         quotes: [
             "To be or not to be that is the question",
             "All the world's a stage and all the men and women merely players",
@@ -23,14 +23,14 @@ const bosses = [
         name: 'Robert Frost',
         icon: '❄️',
         image: 'images/bert.jpeg',
-        hp: 350,
-        maxHp: 350,
+        hp: 900,
+        maxHp: 900,
         quotes: [
             'Two roads diverged in a yellow wood',
             'The woods are lovely dark and deep',
             'Miles to go before I sleep',
-            "In three worsd I can sum up everythign I have learned about life, it goes on",
-            "Good fences make good neighbours"
+            "In three words I can sum up everything I have learned about life, it goes on",
+            "Good fences make good neighbors"
          
         ],
         specialAttack: {
@@ -43,13 +43,13 @@ const bosses = [
         name: 'Edgar Allan Poe',
         icon: '🥀',
         image: 'images/Poe.jpeg',
-        hp: 600,
-        maxHp: 600,
+        hp: 1000,
+        maxHp: 1000,
         quotes: [
             "Quoth the raven nevermore",
             "All that we see or seem is but a dream within a dream",
             "Deep into that darkness peering long I stood there wondering fearing",
-            "The boundaries which devide Life from Death are at best shadowy and vauge",
+            "The boundaries which divide Life from Death are at best shadowy and vague",
             "I became insane with long intervals of horrible sanity"
         ],
         specialAttack: {
@@ -181,7 +181,7 @@ function loadQuote() {
 
         totalWPM = parseInt(wpmDisplay.textContent) || 0;
         totalAccuracy = parseInt(accuracyDisplay.textContent) || 100;
-        totalTime = parseInt(timerDisplay.text.content) || 0;
+        totalTime = parseInt(timerDisplay.textContent) || 0;
      
         setTimeout(function()  {
             showBossDefeatedModal();
@@ -204,13 +204,9 @@ function loadQuote() {
     hint.textContent = `QUOTE ${currentQuoteIndex + 1}/${boss.quotes.length}`;
     renderText(); 
 
-    if (timerInterval) {
-        clearInterval(timerInterval);
-        timerIInterval = null;
-    }
     startTime = Date.now();
     timerInterval = setInterval(() => {
-        if (starTime) {
+        if (startTime) {
             const seconds = Math.floor((Date.now() - startTime) / 1000);
             timerDisplay.textContent = seconds;
             updateStats();
@@ -296,6 +292,12 @@ function damageBoss(damage) {
     }
 }
 
+function healBoss(amount) {
+    bossHP = Math.min(maxBossHP, bossHP + amount);
+    updateBossHealth();
+    showHealNumber(amount);
+}
+
 
 function showDamageNumber(damage) {
     const el = document.createElement('div');
@@ -304,6 +306,18 @@ function showDamageNumber(damage) {
     const bossSection = document.querySelector('.boss-section');
     const rect = bossSection.getBoundingClientRect();
     el.style.left = (rect.left + rect.width / 2 - 20) + 'px';
+    el.style.top = (rect.top - 5) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1000);
+}
+
+function showHealNumber(amount) {
+    const el = document.createElement('div');
+    el.className = 'damage-number heal';
+    el.textContent = `+${amount}`;
+    const bossSection = document.querySelector('.boss-section');
+    const rect = bossSection.getBoundingClientRect();
+    el.style.left = (rect.left + rect.width /2 - 20) + 'px';
     el.style.top = (rect.top - 5) + 'px';
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 1000);
@@ -572,6 +586,8 @@ textDisplay.addEventListener('keydown', function(e) {
         currentSpan.classList.add('incorrect');
         mistakes++;
         totalChars++;
+
+        healBoss(2);
 
         textDisplay.style.borderColor = "#ff6b6b66";
         setTimeout(() => {
