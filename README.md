@@ -8,10 +8,10 @@ A game inspired by the web game Monkey Type, where you use your typing speed in 
 - Fight 3 different bosses 
 
 # Screenshots 
-! [starting page of typing battles] ()
-! [Fighting shakespeare] ()
-! [Fighting robert] ()
-! [Fighting ellan] ()
+! [starting page of typing battles] (startingpage.png)
+! [Fighting shakespeare] (shakey.png)
+! [Fighting robert] (frost.png)
+! [Fighting ellan] (poe.png)
 
 # Controls 
 - Simply click to start typing 
@@ -29,4 +29,5 @@ A game inspired by the web game Monkey Type, where you use your typing speed in 
 
 # Future Improvments 
 In the future I would probably add new bosses, and also re-add the practice mode. I would also aim to make themes like monkeytype, as a major thing in monkeytype is its hundreds of themes so that users can choose whichever one they like.
-# Made by Funnybunny123 (Saatvik). EBK!
+# Made by Funnybunny123 
+# Fun fact, Saatvik's (Healio's) old username in Minecraft was Funnybunny123
