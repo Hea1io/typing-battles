@@ -8,10 +8,10 @@ A game inspired by the web game Monkey Type, where you use your typing speed in 
 - Fight 3 different bosses 
 
 # Screenshots 
-! [starting page of typing battles] (startingpage.png)
-! [Fighting shakespeare] (shakey.png)
-! [Fighting robert] (frost.png)
-! [Fighting ellan] (poe.png)
+![starting page of typing battles](startingpage.png)
+![Fighting shakespeare](shakey.png)
+![Fighting robert](frost.png)
+![Fighting ellan](poe.png)
 
 # Controls 
 - Simply click to start typing 
