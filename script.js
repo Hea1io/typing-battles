@@ -102,6 +102,8 @@ const modalNextBtn = document.getElementById('modalNextBtn');
 const modalRedoBtn = document.getElementById('modalRedoBtn');
 
 const bossPortrait = document.getElementById('bossPortrait');
+const bossImage = document.getElementById('bossImage');
+const bossFallback = document.getElementById('bossFallback');
 
 
 function loadBoss(index) {
@@ -404,9 +406,9 @@ function shareScore() {
 
 function showBossDefeatedModal() {
     
-    const wpm = wpmDisplay.textContent; 
-    const accuracy = accuracyDisplay.textContent;
-    const time = timerDisplay.textContent;
+    const wpm = wpmDisplay.textContent || '0'; 
+    const accuracy = accuracyDisplay.textContent || '100';
+    const time = timerDisplay.textContent || '0';
 
     const boss = bosses[currentBossIndex];
     modalBossName.textContent = boss.name;
@@ -468,7 +470,7 @@ function updateBossPortrait(imagePath, icon) {
     bossFallback.textContent = icon;
 
     bossImage.onerror = function() {
-        console.warm(`Failed to load image: ${imagePath}`);
+        console.warn(`Failed to load image: ${imagePath}`);
         bossImage.classList.add('hidden');
     };
 
