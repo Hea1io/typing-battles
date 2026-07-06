@@ -677,27 +677,6 @@ footer button:active {
 
 
 
-.boss-portrait-container {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-}
-
-.boss-portrait {
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1a1a35;
-    border-radius: 50%;
-    border: 3px solid #2a2a4a;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    overflow: hidden;
-    position: relative;
-    user-select: none;
-}
 
 
 

@@ -127,7 +127,7 @@ function loadBoss(index) {
     }
     const boss = bosses[index];
     bossNameEl.textContent = boss.name;
-    updateBossPortrait(boss.icon);
+    updateBossPortrait(boss.image, boss.icon);
     bossHP = boss.hp;
     maxBossHP = boss.maxHp;
     bossDefeated = false;
@@ -265,10 +265,11 @@ function damageBoss(damage) {
         hint.classList.remove('hidden');
         isFinished = true;
 
-        setTimeout(() => {
+        setTimeout(function()  {
+            updateStats();
             showBossDefeatedModal();
-        }, 800);
-        return;
+        }, 500);
+        
     }
 }
 
@@ -405,6 +406,8 @@ function shareScore() {
 }
 
 function showBossDefeatedModal() {
+
+    updateStats();
     
     const wpm = wpmDisplay.textContent || '0'; 
     const accuracy = accuracyDisplay.textContent || '100';
