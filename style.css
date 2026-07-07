@@ -284,6 +284,17 @@ header h1 {
     color: #ffd93d;
 }
 
+.hint.combo {
+    color: #ffd93d;
+    font-weight: 600;
+    animation: comboPulse 0.5s ease;
+}
+
+@keyframes comboPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform:scale(1.2); }
+}
+
 
 footer {
     margin-top: 1.8rem;

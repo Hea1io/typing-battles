@@ -11,7 +11,12 @@ const bosses = [
             "All the world's a stage and all the men and women merely players",
             "These violent delights have violent ends",
             "Love looks not with the eyes but with the mind",
-            "Parting is such sweet sorrow"
+            "Parting is such sweet sorrow",
+            "The better part of valor is discretion",
+            "Brevity is the soul of wit",
+            "Whats in a name that which we call a rose by any other name would smell as sweet",
+            "All that glitters is not gold",
+            "The course of true love never did run smooth"
         ],
         specialAttack: {
             threshold: 0.5,
@@ -30,7 +35,12 @@ const bosses = [
             'The woods are lovely dark and deep',
             'Miles to go before I sleep',
             "In three words I can sum up everything I have learned about life, it goes on",
-            "Good fences make good neighbors"
+            "Good fences make good neighbors",
+            "The best way out is always through",
+            "Half the world is composed of people who have something to say and can't",
+            "A poem begins as a lump in the throat",
+            "Home is the place where when you have to go there they have to take you in",
+            "Happiness makes up in height for what it lacks in length"
          
         ],
         specialAttack: {
@@ -50,7 +60,12 @@ const bosses = [
             "All that we see or seem is but a dream within a dream",
             "Deep into that darkness peering long I stood there wondering fearing",
             "The boundaries which divide Life from Death are at best shadowy and vague",
-            "I became insane with long intervals of horrible sanity"
+            "I became insane with long intervals of horrible sanity",
+            "Believe nothing you hear and only half of what you see",
+            "There is no beauty without some strangeness",
+            "Words have no power to impress the mind without exquisite horror",
+            "The scariest monsters are the ones that lurk within our souls",
+            "I have great faith in fools my friends call it self-confidence"
         ],
         specialAttack: {
             threshold: 0.3,
@@ -78,9 +93,17 @@ let bossDefeated = false;
 let gameWon = false;
 let allBossesDefeated = false;
 
+let combo = 0;
+let maxCombo = 0;
+let totalCorrect = 0;
+let totalTyped = 0;
+let bossDefeatedThisSession = false;
+
 let totalWPM = 0;
 let totalAccuracy = 100;
 let totalTime = 0;
+
+let selectedQuotes = [];
 
 const textDisplay = document.getElementById('textDisplay');
 const wpmDisplay = document.getElementById('wpm');
@@ -108,6 +131,20 @@ const bossPortrait = document.getElementById('bossPortrait');
 const bossImage = document.getElementById('bossImage');
 const bossFallback = document.getElementById('bossFallback');
 
+const comboDisplay = document.getElementById('comboDisplay');
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function pickRandomQuotes(quotes, count = 5) {
+    const shuffled = shuffleArray([...quotes]);
+    return shuffled.slice(0,count);
+}
 
 function loadBoss(index) {
 
@@ -141,7 +178,7 @@ function loadBoss(index) {
     mistakes = 0;
     totalChars = 0;
     isFinished = false;
-    startTime = null;
+    startTime = Date.now();
     clearInterval(timerInterval);
 
     timerDisplay.textContent = '0';
@@ -152,7 +189,17 @@ function loadBoss(index) {
     hint.textContent = 'Click to start typing';
     document.querySelector('.boss-section').classList.remove('boss-defeated');
 
+    selectedQuotes = pickRandomQuotes(boss.quotes, 5);
     currentQuoteIndex = 0;
+
+    timerInterval = setInterval(() => {
+        if (startTime) {
+            const seconds = Math.floor((Date.now() - startTime) / 1000);
+            timerDisplay.textContent = seconds;
+            updateStats();
+        }
+    }, 500);
+
     loadQuote();
     updateBossHealth();
     textDisplay.focus();
@@ -167,51 +214,30 @@ function loadQuote() {
         originalTextBackup = '';
     }
     const boss = bosses[currentBossIndex];
-    if (currentQuoteIndex >= boss.quotes.length) {
+    if (currentQuoteIndex >= selectedQuotes.length) {
      if (!bossDefeated) {
         bossDefeated = true;
-        gameWon = true;
-        animateBossDefeated();
-
+        gameWon = false;
         document.querySelector('.boss-section').classList.add('boss-defeated');
-        bossNameEl.textContent = 'WIN ' + boss.name + ' DEFEATED!';
-        hint.textContent = 'You win! Click "New Fight" to continue';
+        bossNameEl.textContent = boss.name + 'SURVIVED!';
+        hint.textContent = 'You ran out of quotes! The boss survived! Click "New Fight" to try again';
         hint.classList.remove('hidden');
         isFinished = true;
-
-        totalWPM = parseInt(wpmDisplay.textContent) || 0;
-        totalAccuracy = parseInt(accuracyDisplay.textContent) || 100;
-        totalTime = parseInt(timerDisplay.textContent) || 0;
-     
-        setTimeout(function()  {
-            showBossDefeatedModal();
-        }, 500);
      }
-
-        return;
+     return;
     }
-
-    currentText = boss.quotes[currentQuoteIndex];
+    
+    currentText = selectedQuotes[currentQuoteIndex];
     charIndex = 0;
     mistakes = 0;
     totalChars = 0;
     isFinished = false;
-    startTime = null;
-    clearInterval(timerInterval);
+
   
     textDisplay.style.borderColor = '#2a2a4a';
     hint.classList.remove('hidden');
-    hint.textContent = `QUOTE ${currentQuoteIndex + 1}/${boss.quotes.length}`;
+    hint.textContent = `QUOTE ${currentQuoteIndex + 1}/${selectedQuotes.length}`;
     renderText(); 
-
-    startTime = Date.now();
-    timerInterval = setInterval(() => {
-        if (startTime) {
-            const seconds = Math.floor((Date.now() - startTime) / 1000);
-            timerDisplay.textContent = seconds;
-            updateStats();
-        }
-    },500);
     }
 
 
@@ -244,12 +270,16 @@ function updateStats() {
     if (!startTime) return;
 
     const elapsed = (Date.now() - startTime) / 1000 / 60;
-    const typedChars = charIndex;
+    const typedChars = totalCorrect;
     const wpm = elapsed > 0 ? Math.round((typedChars / 5) / elapsed) : 0;
-    const accuracy = totalChars > 0  ? Math.round(((totalChars - mistakes) / totalChars) * 100) : 100;
+    const accuracy = totalTyped > 0  ? Math.round(((totalChars - mistakes) / totalChars) * 100) : 100;
 
     wpmDisplay.textContent = wpm;
     accuracyDisplay.textContent = accuracy;
+
+    if (comboDisplay) {
+        comboDisplay.textContent = combo;
+    }
 }
 
 function startTimer() {
@@ -428,7 +458,7 @@ function shareScore() {
     const accuracy = accuracyDisplay.textContent;
     const bossName = bosses[currentBossIndex].name;
     const status = gameWon ? 'DEFEATED' : 'IN PROGRESS';
-    const shareText = `Typing Battles\n\nBoss: ${bossName}\nWPM: ${wpm}\nAccuracy: ${accuracy}%\nStatus: ${status}\n\nCan you beat my score?`
+    const shareText = `Typing Battles\n\nBoss: ${bossName}\nWPM: ${wpm}\nAccuracy: ${accuracy}%\n Max Combo: ${maxCombo}\nStatus: ${status}\n\nCan you beat my score?`
     
     if (navigator.share) {
         navigator.share({
@@ -455,7 +485,7 @@ function showBossDefeatedModal() {
     modalWpm.textContent = wpm;
     modalAccuracy.textContent = accuracy + '%'
     modalTime.textContent = time + 's';
-    modalQuotes.textContent = `${currentQuoteIndex}/${boss.quotes.length}`;
+    modalQuotes.textContent = `${currentQuoteIndex}/${selectedQuotes.length}`;
 
     bossDefeatedModal.classList.remove('hidden');
 
@@ -549,9 +579,9 @@ textDisplay.addEventListener('keydown', function(e) {
     e.preventDefault();
 
     if (!startTime) {
-        startTimer();
         hint.classList.add('hidden');
     }
+
 
     if (charIndex >= currentText.length) {
         return;
@@ -570,22 +600,40 @@ textDisplay.addEventListener('keydown', function(e) {
         currentSpan.classList.remove('incorrect');
         charIndex++;
         totalChars++; 
+        totalCorrect++;
+        combo++;
+        if (combo > maxCombo) maxCombo = combo;
+        const comboBonus = Math.floor(combo / 10);
 
         const wpm = parseInt(wpmDisplay.textContent) || 0;
-        let damage = 1;
-        if (wpm > 60) damage = 3;
-        else if (wpm > 40) damage = 2;
-        else if (wpm > 20) damage = 1.5;
+        let damage = 1 + comboBonus;
+        if (wpm > 60) damage = 3 + comboBonus;
+        else if (wpm > 40) damage = 2 + comboBonus;
+        else if (wpm > 20) damage = 1.5 + comboBonus;
+        else damage = 1 + comboBonus;
 
         damageBoss(Math.round(damage));
 
         triggerSpecialAttack();
+
+        if (combo > 0 && combo % 10 === 0) {
+            hint.textContent = `${combo} COMBO! +${comboBonus} DAMAGE BONUS!`
+
+            hint.className = 'hint combo';
+            hint.classList.remove('hidden');
+            setTimeout(() => {
+                if (!isFinished) hint.classList.add('hidden');
+
+
+            }, 1000);
+      }
 
     
     } else {
         currentSpan.classList.add('incorrect');
         mistakes++;
         totalChars++;
+        combo = 0;
 
         healBoss(2);
 
@@ -601,7 +649,7 @@ textDisplay.addEventListener('keydown', function(e) {
 
     updateStats();
 
-    if (charIndex >= currentText.length && !bossDefeated) {
+    if (charIndex >= currentText.length && !bossDefeated && !allBossesDefeated) {
         isFinished = true;
         currentQuoteIndex++;
         setTimeout(() => {
@@ -624,7 +672,24 @@ resetBtn.addEventListener('click', function() {
        textDisplay.focus();
     });
 
-shareBtn.addEventListener('click', shareScore);
+shareBtn.addEventListener('click', function() {
+    if (bossDefeatedThisSession || allBossesDefeated) {
+        shareScore();
+    
+    } else {
+        hint.textContent = 'Defeat The Boss First!';
+        hint.className = 'hint warning';
+        hint.classList.remove('hidden');
+        setTimeout(() => {
+            if (!isFinished) hint.classList.add('hidden');
+        }, 2000);
+    }
+});
+
+window.addEventListener('load', function() {
+    textDisplay.focus();
+
+});
 
 loadBoss(0);
 console.log('Type to defeat the boss!')

@@ -1,11 +1,16 @@
 # Typing Battles 
 
-A game inspired by the web game Monkey Type, where you use your typing speed in order to defeat famous writers throughout history
+A game inspired by the web game Monkey Type, where you use your typing speed in order to defeat famous writers throughout history in epic boss battles!
 
 # Features 
-- See your typing speed & accuracy 
-- Share you score with friends 
-- Fight 3 different bosses 
+- Real time typing speed (WPM) and accuracy tracking
+- Share your scores with friends after defeating a boss
+- Fight 3 unique literary bosses: William Shakespeare, Robert Frost, and Edgar Allan Poe
+- Combo system - Type accurately in succession to build combos and deal extra damage
+- Boss special attacks - Each boss has unique abilities that trigger when their health gets low
+- Dynamic diifficulty - The faster and more accurately you type, the more damage you deal
+- Pixel art aesthetic - Clean, retro gaming feel
+- Boss portraits - Each boss has their own unique image 
 
 # Screenshots 
 ![starting page of typing battles](startingpage.png)
@@ -14,13 +19,15 @@ A game inspired by the web game Monkey Type, where you use your typing speed in 
 ![Fighting ellan](poe.png)
 
 # Controls 
-- Simply click to start typing 
+- Click to focus typing area
+- Type the displayed text
 
 # How to play 
-1. Click to start typing 
-2. Type what is written on the sreen 
-3. Your typing does damage, use it to kill the boss
-4. After beating the first boss you can move to the 2nd and finally the 3rd to beat the game 
+1. Click on the blurred text to begin
+2. Each boss has multiple quotes you need to type through 
+3. Correct letters that you type deal damage to the boss
+4. Type correctly many times in a row to build your combo meter, every 10 combo gives you bonus damage
+5. After beating the first boss you can move to the 2nd and finally the 3rd to beat the game 
 
 # Tech Stack 
 - Static HTML
