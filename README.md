@@ -15,11 +15,11 @@ A game inspired by the web game Monkeytype, where you use your typing speed in o
 
 # Screenshots 
 
-![starting page of typing battles](screenshots/startingscreen.png)
+![starting page of typing battles](startingscreen.png)
 
-![Fighting shakespeare](screenshots/fightshakey.png)
+![Fighting shakespeare](fightshakey.png)
 
-![Practice mode](screenshots/practicemode.png)
+![Practice mode](practicemode.png)
 
 
 
