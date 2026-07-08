@@ -13,6 +13,13 @@ A game inspired by the web game Monkeytype, where you use your typing speed in o
 - Boss portraits - Each boss has their own unique image 
 - Practice mode - Test your WPM without any consequences
 
+# Setup Instructions 
+1. Download the typing battles .zip file
+2. Extract the zip file to get the typing battles folder 
+3. Open the typing battles folder
+4. Double click the index.html file
+5. Have fun!
+
 # Screenshots 
 
 ![starting page of typing battles](startingscreen.png)
