@@ -14,14 +14,12 @@ A game inspired by the web game Monkeytype, where you use your typing speed in o
 - Practice mode - Test your WPM without any consequences
 
 # Screenshots 
-Starting screen - 
-![starting page of typing battles](screenshots/startingscreen.png)
-Fighting Shakespeare (the first boss) - 
-![Fighting shakespeare](screenshots/fightshakey.png)
-Practice mode - 
-![Practice mode](screenshots/practicemode.png)
 
-Play the game to see the other bosses!
+![starting page of typing battles](screenshots/startingscreen.png)
+
+![Fighting shakespeare](screenshots/fightshakey.png)
+
+![Practice mode](screenshots/practicemode.png)
 
 
 
