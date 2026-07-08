@@ -15,11 +15,11 @@ A game inspired by the web game Monkey Type, where you use your typing speed in 
 
 # Screenshots 
 Starting page -
-![starting page of typing battles](startingscreen.png)
+![starting page of typing battles](screenshots/startingscreen.png)
 Fighting Shakespeare (the first boss) -
-![Fighting shakespeare](fightshakey.png)
+![Fighting shakespeare](screenshots/fightshakey.png)
 Practice mode - 
-![Practice mode](practicemode.png)
+![Practice mode](screenshots/practicemode.png)
 
 Play the game to see the other 2 bosses!
 
