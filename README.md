@@ -1,6 +1,6 @@
 # Typing Battles 
 
-A game inspired by the web game Monkey Type, where you use your typing speed in order to defeat famous writers throughout history in epic boss battles!
+A game inspired by the web game Monkeytype, where you use your typing speed in order to defeat famous writers throughout history in epic boss battles!
 
 # Features 
 - Real time typing speed (WPM) 
@@ -14,14 +14,15 @@ A game inspired by the web game Monkey Type, where you use your typing speed in 
 - Practice mode - Test your WPM without any consequences
 
 # Screenshots 
-Starting page -
+Starting screen - 
 ![starting page of typing battles](screenshots/startingscreen.png)
-Fighting Shakespeare (the first boss) -
+Fighting Shakespeare (the first boss) - 
 ![Fighting shakespeare](screenshots/fightshakey.png)
 Practice mode - 
 ![Practice mode](screenshots/practicemode.png)
 
-Play the game to see the other 2 bosses!
+Play the game to see the other bosses!
+
 
 
 
