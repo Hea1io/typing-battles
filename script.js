@@ -188,6 +188,13 @@ const practiceMode = document.getElementById('practiceMode');
 
 const shareBtn = document.getElementById('shareBtn');
 
+const mobileInput = document.getElementById('mobileInput');
+
+function handleMobileInput() {
+    if (!mobileInput) return;
+};
+
+
 
 
 function shuffleArray(array) {
@@ -234,6 +241,11 @@ function loadBoss(index) {
     charIndex = 0;
     mistakes = 0;
     totalChars = 0;
+    totalCorrect = 0;
+    totalTyped = 0;
+    combo = 0;
+    maxCombo = 0;
+    totalCorrect = 0;
     isFinished = false;
     startTime = Date.now();
     clearInterval(timerInterval);
@@ -736,6 +748,65 @@ function toggleMode() {
 
 }
 
+textDisplay.addEventListener('click', function(e) {
+    if (!isFinished && !bossDefeated) {
+        mobileInput.focus();
+        if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
+            mobileInput.click();
+        }
+    }
+    e.stopPropagation();
+});
+
+practiceTextDisplay.addEventListener('click', function(e) {
+    if(!practiceIsFinished) {
+        mobileInput.focus();
+        if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
+            mobileInput.click();
+        }
+    }
+    e.stopPropagation();
+});
+
+mobileInput.addEventListener('input', function(e) {
+    const value = this.value;
+    if (value.length === 0) return;
+
+    const lastChar = value[value.length - 1];
+
+    if (currentMode === 'boss') {
+        const keyEvent = new KeyboardEvent('keydown', {
+            key: lastChar,
+            bubbles: true,
+            cancelable: true
+        });
+        textDisplay.dispatchEvent(keyEvent);
+    } else {
+        const keyEvent = new KeyboardEvent('keydown', {
+            key: lastChar,
+            bubbles: true,
+            cancelable: true
+        });
+        practiceTextDisplay.dispatchEvent(keyEvent);
+    }
+
+    this.value = '';
+});
+
+document.querySelector('.container').addEventListener('click', function(e) {
+    if (e.target.closest('button')) return;
+    if (e.target.closest('.modal')) return;
+    if (e.target.closest('.modal-content')) return;
+
+    if (!isFinished && !bossDefeated) {
+        setTimeout(() => {
+            mobileInput.focus();
+        }, 100);
+    }
+});
+
+
+
 modeToggleBtn.addEventListener('click', toggleMode);
     
 
@@ -984,6 +1055,8 @@ window.addEventListener('load', function() {
 });
 
 loadBoss(0);
+
+handleMobileInput();
 
 console.log('Type to defeat the boss!')
 

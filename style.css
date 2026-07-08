@@ -740,6 +740,146 @@ footer button:active {
     }
 }
 
+.mobile-input {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        max-width: 100%;
+        margin: 0.5rem;
+    }
+
+    .text-display {
+        font-size: 1rem;
+        line-height: 1.8rem;
+        padding: 1rem;
+        min-height: 100px;
+    }
+
+    .boss-portrait {
+        width: 56px;
+        height: 56px;
+        font-size: 2rem;
+    }
+
+    .stats {
+        gap: 0.6rem;
+        font-size: 0.45rem;
+    }
+
+    .stats strong {
+        font-size: 0.55rem;
+    }
+
+    header h1 {
+        font-size: 0.9rem;
+    }
+
+    .boss-section {
+        padding: 0.6rem 0.8rem;
+    }
+
+    .boss-header {
+        font-size: 0.5rem;
+    }
+
+    .boss-health-bar {
+        height: 12px;
+    }
+
+    .mode-toggle-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.55rem;
+        min-width: 80px;
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    footer button {
+        padding: 0.5rem 1rem;
+        font-size: 0.5rem;
+    }
+
+    .modal-stats {
+        gap: 0.5rem;
+    }
+
+    .modal-stat .stat-value {
+        font-size: 0.9rem;
+    }
+
+    .boss-message {
+        font-size: 0.7rem;
+        padding: 1rem 1.5rem;
+
+    }
+
+    .damage-number {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .container {
+        padding: 0.6rem;
+    }
+
+    .text-display {
+        font-size: 0.85rem;
+        line-height: 1.5rem;
+        padding: 0.8rem;
+        min-height: 80px;
+    }
+
+    .stats {
+        gap: 0.4rem;
+        font-size: 0.4rem;
+    }
+
+    header h1 {
+        font-size: 0.7rem;
+    }
+
+    .boss-portrait {
+        width: 44px;
+        height: 44px;
+        font-size: 1.5rem;
+    }
+
+    .boss-section {
+        padding: 0.4rem 0.6rem;
+    }
+
+    .boss-header {
+        font-size: 0.4rem;
+    }
+
+    .boss-health-bar {
+        height: 8px;
+
+    }
+
+    footer button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.4rem;
+    }
+
+    .mode-toggle-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.45rem;
+        min-width: 60px;
+    }
+}
+
 
 
 
