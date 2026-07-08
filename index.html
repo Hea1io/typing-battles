@@ -14,6 +14,8 @@
     <body>
         <div class="container">
 
+    <div id="bossMode" class="mode-content">
+
         <header>
                 <h1>Typing Battles</h1>
                 <div class="stats">
@@ -52,6 +54,32 @@
                     </footer>
                 </div>
 
+                <div id="practiceMode" class="mode-content hidden">
+                    <header>
+                        <h1>Practice Mode</h1>
+                        <div class="stats">
+                            <span><strong id='practiceWpm'>0</strong> WPM</span>
+                            <span><strong id='practiceAccuracy'>100</strong>%</span>
+                            <span><strong id='practiceTimer'>0</strong>s</span>
+                        </div>
+                    </header>
+
+                    <main>
+                        <div id="practiceTextDisplay" class="text-display" tabindex="0"></div>
+                        <div class="hint" id="practiceHint">Click to start practice</div>
+                        <div class="practice-progress" id="practiceProgress">1/10</div>
+                        
+                    </main>
+                    <footer>
+                        <button id="practiceResetBtn">New Text</button>
+                        <button id="practiceShareBtn" class="share-btn">Share</button>
+                    </footer>
+                </div>
+
+                <button id="modeToggleBtn" class="mode-toggle-btn">Practice</button>
+
+                </div>
+
    <div id="bossDefeatedModal" class="modal hidden">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -87,8 +115,43 @@
                     </div>
                 </div>
 
+                <div id="practiceCompleteModal" class="modal hidden">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="modal-icon">yeah</span>
+                            <h2>Practice Complete!</h2>
+                        </div>
+                        <div class="modal-body">
+                            <p class="modal-boss-name">Practice Session</p>
+                            <div class="modal-stats">
+                                <div class="modal-stat">
+                                    <span class="stat-label">WPM</span>
+                                    <span class="stat-value" id="practiceModalWpm">0</span>
+                                </div>
+                                <div class="modal-stat">
+                                    <span class="stat-label">Accuracy</span>
+                                    <span class="stat-value" id="practiceModalAccuracy">0%</span>
+
+                                </div>
+                                <div class="modal-stat">
+                                    <span class="stat-label">Time</span>
+                                    <span class="stat-value" id="practiceModalTime">0s</span>
+                                </div>
+                                <div class="modal-stat">
+                                    <span class="stat-label">Texts</span>
+                                    <span class="stat-value" id="practiceModalTexts">10/10</span>
+                                </div>
+                            </div>
+                            <div class="modal-actions">
+                                <button id="practiceModalShareBtn" class="modal-btn share-btn">Share</button>
+                                <button id="practiceModalRedoBtn" class="modal-btn redo-btn">Practice Again</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 
-            </div>
+            
             <script src="script.js"></script>
         </body>
 </html>

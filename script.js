@@ -74,6 +74,34 @@ const bosses = [
         }
     }
 ]; 
+
+let practiceTexts = [
+    "The quick brown fox jumps over the lazy dog",
+    "I've met blue lips So true they make you cold inside",
+    "The waves suck you in and you drown If like, you should sink down beneath",
+    "Funnybunny123 is the best Minecraft username",
+    "Hypixel Bridge is a million times better then Bedwars",
+    "In the middle of difficulty lies opportunity",
+    "The only way to do great work is to love what you do or be Hea1io",
+    "How could my day be bad when im with you?",
+    "The best time to plant a tree was twenty yers ago, the second best time is now!",
+    "It does not matter how slowly you go as long as you do not stop"
+];
+let practiceText = '';
+let practiceCharIndex = 0;
+let practiceMistakes = 0;
+let practiceTotalChars = 0;
+let practiceStartTime = null;
+let practiceTimerInterval = null;
+let practiceIsFinished = false;
+let practiceTextIndex = 0;
+let practiceCompleted = 0;
+let practiceTotalCorrect = 0;
+let practiceTotalTyped = 0;
+let practiceMaxCombo = 0;
+let practiceCombo = 0;
+let practiceModeActive = false;
+
 let currentText = '';
 let charIndex = 0;
 let mistakes = 0;
@@ -103,7 +131,10 @@ let totalWPM = 0;
 let totalAccuracy = 100;
 let totalTime = 0;
 
+let currentMode = 'boss';
+
 let selectedQuotes = [];
+
 
 const textDisplay = document.getElementById('textDisplay');
 const wpmDisplay = document.getElementById('wpm');
@@ -117,6 +148,24 @@ const bossNameEl = document.getElementById('bossName');
 const bossHpText = document.getElementById('bossHpText');
 const bossHealthFill = document.getElementById('bossHealth');
 const bossDefeatedModal = document.getElementById('bossDefeatedModal');
+
+const practiceTextDisplay = document.getElementById('practiceTextDisplay');
+const practiceWpmDisplay = document.getElementById('practiceWpm');
+const practiceAccuracyDisplay = document.getElementById('practiceAccuracy');
+const practiceTimerDisplay = document.getElementById('practiceTimer');
+const practiceHint = document.getElementById('practiceHint');
+
+const practiceResetBtn = document.getElementById('practiceResetBtn');
+const practiceShareBtn = document.getElementById('practiceShareBtn');
+const practiceProgress = document.getElementById('practiceProgress');
+
+const practiceCompleteModal = document.getElementById('practiceCompleteModal');
+const practiceModalWpm = document.getElementById('practiceModalWpm');
+const practiceModalAccuracy = document.getElementById('practiceModalAccuracy');
+const practiceModalTime = document.getElementById('practiceModalTime');
+const practiceModalShareBtn = document.getElementById('practiceModalShareBtn');
+const practiceModalRedoBtn = document.getElementById('practiceModalRedoBtn');
+const practiceModalTexts = document.getElementById('practiceModalTexts');
 
 const modalBossName = document.getElementById('modalBossName');
 const modalWpm = document.getElementById('modalWpm');
@@ -132,6 +181,14 @@ const bossImage = document.getElementById('bossImage');
 const bossFallback = document.getElementById('bossFallback');
 
 const comboDisplay = document.getElementById('comboDisplay');
+
+const modeToggleBtn = document.getElementById('modeToggleBtn');
+const bossMode = document.getElementById('bossMode');
+const practiceMode = document.getElementById('practiceMode');
+
+const shareBtn = document.getElementById('shareBtn');
+
+
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -219,14 +276,14 @@ function loadQuote() {
         bossDefeated = true;
         gameWon = false;
         document.querySelector('.boss-section').classList.add('boss-defeated');
-        bossNameEl.textContent = boss.name + 'SURVIVED!';
+        bossNameEl.textContent = boss.name + ' SURVIVED!';
         hint.textContent = 'You ran out of quotes! The boss survived! Click "New Fight" to try again';
         hint.classList.remove('hidden');
         isFinished = true;
      }
      return;
     }
-    
+
     currentText = selectedQuotes[currentQuoteIndex];
     charIndex = 0;
     mistakes = 0;
@@ -238,6 +295,108 @@ function loadQuote() {
     hint.classList.remove('hidden');
     hint.textContent = `QUOTE ${currentQuoteIndex + 1}/${selectedQuotes.length}`;
     renderText(); 
+    }
+
+function loadPracticeText() {
+    if (practiceTextIndex >= practiceTexts.length) {
+        practiceIsFinished = true;
+        practiceComplete();
+        return;
+    }
+
+    practiceText = practiceTexts[practiceTextIndex];
+    practiceCharIndex = 0;
+    practiceMistakes = 0;
+    practiceTotalChars = 0;
+    practiceIsFinished = false;
+    practiceCombo = 0;
+    practiceStartTime = Date.now();
+    clearInterval(practiceTimerInterval);
+
+    practiceTimerDisplay.textContent = '0';
+    practiceWpmDisplay.textContent = '0';
+    practiceAccuracyDisplay.textContent = '100';
+    practiceHint.classList.remove('hidden');
+    practiceHint.textContent = `Text ${practiceTextIndex + 1}/${practiceTexts.length}`;
+    practiceProgress.textContent = `${practiceTextIndex + 1}/${practiceTexts.length}`;
+
+    renderPracticeText();
+
+    practiceTimerInterval = setInterval(() => {
+        if (practiceStartTime) {
+            const seconds = Math.floor((Date.now() - practiceStartTime) / 1000);
+
+            practiceTimerDisplay.textContent = seconds;
+            updatePracticeStats();
+        }
+    }, 500);
+    practiceTextDisplay.focus();
+}
+
+function renderPracticeText() {
+    practiceTextDisplay.innerHTML = '';
+    for (let i = 0; i < practiceText.length; i++) {
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = practiceText[i];
+        if (i === 0) span.classList.add('current');
+        practiceTextDisplay.appendChild(span);
+    }
+}
+
+function updatePracticeStats() {
+    if(!practiceStartTime) return;
+
+    const elapsed = (Date.now() - practiceStartTime) / 1000 / 60;
+    const typedChars = practiceTotalCorrect;
+    const wpm = elapsed > 0 ? Math.round((typedChars / 5) / elapsed) : 0;
+    const accuracy = practiceTotalTyped > 0 ? Math.round((practiceTotalCorrect / practiceTotalTyped) * 100) : 100;
+
+    practiceWpmDisplay.textContent = wpm;
+    practiceAccuracyDisplay.textContent = accuracy;
+
+}
+
+function practiceComplete() {
+    clearInterval(practiceTimerInterval);
+    practiceIsFinished = true;
+
+    const wpm = practiceWpmDisplay.textContent || '0';
+    const accuracy = practiceAccuracyDisplay.textContent || '100';
+    const time = practiceTimerDisplay.textContent || '0';
+
+    practiceModalWpm.textContent = wpm;
+    practiceModalAccuracy.textContent = accuracy + '%';
+    practiceModalTime.textContent = time + 's';
+    practiceModalTexts.textContent = `${practiceTexts.length}/${practiceTexts.length}`;
+
+    practiceCompleteModal.classList.remove('hidden');
+}
+
+function sharePracticeScore() {
+    const wpm = practiceWpmDisplay.textContent;
+    const accuracy = practiceAccuracyDisplay.textContent;
+    const time = practiceTimerDisplay.textContent;
+    const shareText = `PRACTICE MODE\n\nTexts: ${practiceTexts.length}\nWPM: ${wpm}\nAccuracy: ${accuracy}%\n Time: ${time}s\n Max Combo: ${practiceMaxCombo}\n\nCan you beat my practice score?`;
+    if (navigator.share) {
+        navigator.share({
+            title: 'Typing Battles Practice Score',
+            text: shareText,
+        }).catch(() => {
+            prompt('Copy this to share:', shareText);
+        });
+        } else {
+            navigator.clipboard.writeText(shareText).then(() => {
+                practiceHint.textContent = 'Copied to clipboard!';
+                practiceHint.className = 'hint restored';
+                practiceHint.classList.remove('hidden');
+                setTimeout(() => {
+                    practiceHint.textContent = 'Click to start practice';
+                }, 2000);
+            }).catch(() => {
+                prompt('Copy to share:', shareText);
+            });
+        }
     }
 
 
@@ -272,7 +431,7 @@ function updateStats() {
     const elapsed = (Date.now() - startTime) / 1000 / 60;
     const typedChars = totalCorrect;
     const wpm = elapsed > 0 ? Math.round((typedChars / 5) / elapsed) : 0;
-    const accuracy = totalTyped > 0  ? Math.round(((totalChars - mistakes) / totalChars) * 100) : 100;
+    const accuracy = totalTyped > 0  ? Math.round((totalCorrect / totalTyped) * 100) : 100;
 
     wpmDisplay.textContent = wpm;
     accuracyDisplay.textContent = accuracy;
@@ -555,6 +714,31 @@ function updateBossPortrait(imagePath, icon) {
   
 }
 
+function toggleMode() {
+    if (currentMode === 'boss') {
+        currentMode = 'practice';
+        bossMode.classList.add('hidden');
+        practiceMode.classList.remove('hidden');
+        modeToggleBtn.textContent = 'Boss';
+        modeToggleBtn.style.borderColor = '#ff3b3b';
+        if (practiceTextIndex === 0 && !practiceIsFinished) {
+            loadPracticeText();
+        }
+        practiceTextDisplay.focus();
+    } else {
+        currentMode = 'boss';
+        practiceMode.classList.add('hidden');
+        bossMode.classList.remove('hidden');
+        modeToggleBtn.textContent = 'Practice';
+        modeToggleBtn.style.borderColor = '#4ecdc4';
+        textDisplay.focus();
+    }
+
+}
+
+modeToggleBtn.addEventListener('click', toggleMode);
+    
+
 modalNextBtn.addEventListener('click', function() {
     hideBossDefeatedModal();
     if (currentBossIndex < bosses.length - 1) {
@@ -601,6 +785,7 @@ textDisplay.addEventListener('keydown', function(e) {
         charIndex++;
         totalChars++; 
         totalCorrect++;
+        totalTyped++;
         combo++;
         if (combo > maxCombo) maxCombo = combo;
         const comboBonus = Math.floor(combo / 10);
@@ -633,6 +818,7 @@ textDisplay.addEventListener('keydown', function(e) {
         currentSpan.classList.add('incorrect');
         mistakes++;
         totalChars++;
+        totalTyped++;
         combo = 0;
 
         healBoss(2);
@@ -663,6 +849,112 @@ textDisplay.addEventListener('click', function() {
 
 });
 
+practiceTextDisplay.addEventListener('keydown', function(e) {
+    if (practiceIsFinished) return;
+    if (e.key.length > 1 || e.ctrlKey || e.altKey || e.metaKey) return;
+
+    e.preventDefault();
+
+    if(!practiceStartTime) {
+        practiceStartTime = Date.now();
+        practiceHint.classList.add('hidden');
+    }
+
+    if (practiceCharIndex >= practiceText.length) {
+        return;
+    }
+
+    const typedChar = e.key;
+    const expectedChar = practiceText[practiceCharIndex];
+
+    const charSpans = practiceTextDisplay.querySelectorAll('.char');
+    const currentSpan = charSpans[practiceCharIndex];
+    
+    charSpans.forEach(span => span.classList.remove('current'));
+
+    if (typedChar === expectedChar) {
+        currentSpan.classList.add('correct');
+        currentSpan.classList.remove('incorrect');
+        practiceCharIndex++;
+        practiceTotalCorrect++;
+        practiceTotalTyped++;
+        practiceCombo++;
+        if (practiceCombo > practiceMaxCombo) practiceMaxCombo = practiceCombo;
+    } else {
+        currentSpan.classList.add('incorrect');
+        practiceMistakes++;
+        practiceTotalTyped++;
+        practiceCombo = 0;
+
+        practiceTextDisplay.style.borderColor = '#ff6b6b66';
+        setTimeout(() => {
+            if (!practiceIsFinished) practiceTextDisplay.style.borderColor = '#2a2a4a';
+        }, 150);
+        }
+
+        if (practiceCharIndex < charSpans.length) {
+            charSpans[practiceCharIndex].classList.add('current');
+        }
+
+        updatePracticeStats();
+
+        if (practiceCharIndex >= practiceText.length) {
+            practiceIsFinished = true;
+            practiceTextIndex++;
+            setTimeout(() => {
+                loadPracticeText();
+
+            }, 800);
+        }
+    });
+
+    practiceTextDisplay.addEventListener('click', function() {
+        practiceTextDisplay.focus();
+    });
+
+    practiceResetBtn.addEventListener('click', function() {
+        practiceTextIndex = 0;
+        practiceTotalCorrect = 0;
+        practiceTotalTyped = 0;
+        practiceMaxCombo = 0;
+        practiceCombo = 0;
+        practiceCompleteModal.classList.add('hidden');
+        loadPracticeText();
+        practiceTextDisplay.focus();
+    });
+
+    practiceShareBtn.addEventListener('click', function() {
+        if (practiceIsFinished) {
+            sharePracticeScore();
+        } else {
+            practiceHint.textContent = 'Finish Practice First!';
+            practiceHint.className = 'hint warning';
+            practiceHint.classList.remove('hidden');
+            setTimeout(() => {
+                if (!practiceIsFinished) practiceHint.classList.add('hidden');
+
+            }, 2000);
+        }
+    });
+
+practiceModalShareBtn.addEventListener('click', function() {
+    sharePracticeScore();
+});
+
+practiceModalRedoBtn.addEventListener('click', function() {
+    practiceCompleteModal.classList.add('hidden');
+    practiceTextIndex = 0;
+    practiceTotalCorrect = 0;
+    practiceTotalTyped = 0;
+    practiceMaxCombo = 0;
+    practiceCombo = 0;
+    loadPracticeText();
+    practiceTextDisplay.focus();
+});
+    
+
+
+
 resetBtn.addEventListener('click', function() {
        hideBossDefeatedModal();
        currentQuoteIndex = 0;
@@ -692,6 +984,7 @@ window.addEventListener('load', function() {
 });
 
 loadBoss(0);
+
 console.log('Type to defeat the boss!')
 
 
